@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yetiwu.crm.workbench.dao.ActivityDao">
+    <select id="getDetailById" resultType="Activity">
+        select
+            a.id,
+            u.name as owner,
+            a.name,
+            a.startDate,
+            a.endDate,
+            a.cost,
+            a.description,
+            a.createTime,
+            a.createBy,
+            a.editTime,
+            a.editBy
+        from tbl_activity as a
+
+        join tbl_user as u
+
+        on a.owner = u.id
+
+        where a.id=#{id}
+    </select>
+
+    <!--修改市场活动信息-->
+    <update id="update">
+        update tbl_activity set
+            owner = #{owner},
+            name = #{name},
+            cost = #{cost},
+            description = #{description},
+            editTime = #{editTime},
+            editBy = #{editBy}
+        where id=#{id}
+    </update>
+
+    <!--根据id来获取市场活动信息单条-->
+    <select id="getActivityById" resultType="Activity">
+        select
+            id,
+            owner,
+            name,
+            startDate,
+            endDate,
+            cost,
+            description
+
+        from tbl_activity
+
+        where id=#{id}
+
+    </select>
+
+    <!--删除市场活动信息-->
+    <delete id="delete">
+        delete from tbl_activity
+
+        where id in
+
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--查询总记录条数-->
+    <select id="getTotalCount" resultType="int">
+        select
+            count(*)
+        from tbl_activity a
+        join tbl_user u
+        on  a.owner = u.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+
+            <if test="endDate!= null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+
+        </where>
+    </select>
+
+    <!--查询市场信息列表-->
+    <select id="getActivityByCondition" resultType="Activity">
+        select
+            a.id,
+            a.name,
+            u.name as owner,
+            a.startDate,
+            a.endDate
+        from tbl_activity as a
+        join tbl_user as u
+        on  a.owner = u.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+
+            <if test="endDate!= null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+
+        </where>
+
+        order by a.startDate desc
+
+        limit #{skipCount},#{pageSize}
+
+    </select>
+
+    <insert id="saveActivity">
+        insert into tbl_activity(
+            id,
+            owner,
+            name,
+            startDate,
+            endDate,
+            cost,
+            description,
+            createTime,
+            createBy
+        )values(
+            #{id},
+            #{owner},
+            #{name},
+            #{startDate},
+            #{endDate},
+            #{cost},
+            #{description},
+            #{createTime},
+            #{createBy}
+        )
+    </insert>
+
+</mapper>
