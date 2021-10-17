@@ -29,4 +29,10 @@ public interface ActivityService {
     String getRemarkContent(String id);
 
     boolean updateRemarkContent(ActivityRemark ar);
+
+    List<Activity> getActivityListById(String clueId);
+
+    List<Activity> getActivityList(Map<String, String> map);
+
+    List<Activity> getActivityListByName(String name);
 }

@@ -25,6 +25,11 @@
     <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
 
+  <!--注册application监听器-->
+  <listener>
+    <listener-class>com.yetiwu.crm.web.listener.SysInitListener</listener-class>
+  </listener>
+
   <!--用户控制器注册-->
   <servlet>
     <servlet-name>UserController</servlet-name>
@@ -55,6 +60,54 @@
     <url-pattern>/workbench/activity/getRemarkContent.do</url-pattern>
     <url-pattern>/workbench/activity/updateRemarkContent.do</url-pattern>
   </servlet-mapping>
+
+  <!--线索模块控制器注册-->
+  <servlet>
+    <servlet-name>ClueController</servlet-name>
+    <servlet-class>com.yetiwu.crm.workbench.web.controller.ClueController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClueController</servlet-name>
+    <url-pattern>/workbench/clue/getUserList.do</url-pattern>
+    <url-pattern>/workbench/clue/saveClue.do</url-pattern>
+    <url-pattern>/workbench/clue/pageList.do</url-pattern>
+    <url-pattern>/workbench/clue/detail.do</url-pattern>
+    <url-pattern>/workbench/clue/getActivityListById.do</url-pattern>
+    <url-pattern>/workbench/clue/unbund.do</url-pattern>
+    <url-pattern>/workbench/clue/getActivityList.do</url-pattern>
+    <url-pattern>/workbench/clue/bund.do</url-pattern>
+    <url-pattern>/workbench/clue/getActivityListByName.do</url-pattern>
+    <url-pattern>/workbench/clue/convert.do</url-pattern>
+  </servlet-mapping>
+
+  <!--交易模块控制器注册-->
+  <servlet>
+    <servlet-name>TransactionController</servlet-name>
+    <servlet-class>com.yetiwu.crm.workbench.web.controller.TransactionController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TransactionController</servlet-name>
+    <url-pattern>/workbench/transaction/getOwnerList.do</url-pattern>
+    <url-pattern>/workbench/transaction/getActivityList.do</url-pattern>
+    <url-pattern>/workbench/transaction/getContactsNameList.do</url-pattern>
+    <url-pattern>/workbench/transaction/getCustomerName.do</url-pattern>
+    <url-pattern>/workbench/transaction/save.do</url-pattern>
+    <url-pattern>/workbench/transaction/pageList.do</url-pattern>
+    <url-pattern>/workbench/transaction/detail.do</url-pattern>
+    <url-pattern>/workbench/transaction/getHistoryByTranId.do</url-pattern>
+    <url-pattern>/workbench/transaction/changeStage.do</url-pattern>
+    <url-pattern>/workbench/transaction/getCharts.do</url-pattern>
+  </servlet-mapping>
+
+  <!--客户模块控制器注册-->
+  <servlet>
+    <servlet-name>CustomerController</servlet-name>
+    <servlet-class>com.yetiwu.crm.workbench.web.controller.CustomerController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>CustomerController</servlet-name>
+  <url-pattern>/workbench/customer/getOwnerList.do</url-pattern>
+</servlet-mapping>
 </web-app>
 
 

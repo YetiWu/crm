@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yetiwu.crm.workbench.dao.TranDao">
+
+    <select id="getAll" resultType="int">
+        select count(*) from tbl_tran
+    </select>
+    <select id="getGroupByStage" resultType="map">
+        select
+        stage as name ,count(*) as value
+        from tbl_tran
+        group by stage
+    </select>
+
+    <update id="changeStage">
+        update tbl_tran set stage=#{stage},editBy=#{editBy},editTime=#{editTime}
+        where id=#{id}
+    </update>
+
+    <select id="detail" resultType="Tran">
+        select
+            tran.id,
+            u.name as owner,
+            tran.money,
+            tran.name,
+            tran.expectedDate,
+            c.name as customerId,
+            tran.stage,
+            tran.type,
+            tran.source,
+            act.name as activityId,
+            con.fullname as contactsId,
+            tran.createBy,
+            tran.createTime,
+            tran.editBy,
+            tran.editTime,
+            tran.description,
+            tran.contactSummary,
+            tran.nextContactTime
+
+        from tbl_tran tran
+        join tbl_user u
+        on tran.owner = u.id
+        left join tbl_activity act
+        on tran.activityId = act.id
+        join tbl_customer c
+        on tran.customerId = c.id
+        left join tbl_contacts con
+        on tran.contactsId = con.id
+        where tran.id=#{id}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(*)
+        from tbl_tran t
+        join tbl_user u
+        on t.owner = u.id
+        left join tbl_customer c
+        on t.customerId = c.id
+        left join tbl_contacts con
+        on t.contactsId = con.id
+
+        <where>
+        <if test="owner!=null and owner!=''">
+            u.name like '%' #{owner} '%'
+        </if>
+        <if test="name!=null and name!=''">
+            and t.name like '%' #{name} '%'
+        </if>
+        <if test="customerName!=null and customerName!=''">
+            and c.name like '%' #{customerName} '%'
+        </if>
+        <if test="stage!=null and stage!=''">
+            and t.stage=#{stage}
+        </if>
+        <if test="type!=null and type!=''">
+            and t.type=#{type}
+        </if>
+        <if test="source!=null and source!=''">
+            and t.source=#{source}
+        </if>
+        <if test="contactsName!=null and contactsName!=''">
+            and con.name like '%' #{contactsName} '%'
+        </if>
+
+        </where>
+    </select>
+
+    <select id="pageList" resultType="Tran">
+        select
+        t.id,
+        u.name as owner,
+        t.name,
+        c.name as customerId,
+        t.stage,
+        t.type,
+        t.source,
+        con.fullname as contactsId
+
+        from tbl_tran t
+        join tbl_user u
+        on t.owner = u.id
+        left join tbl_customer c
+        on t.customerId = c.id
+        left join tbl_contacts con
+        on t.contactsId = con.id
+
+        <where>
+            <if test="owner!=null and owner!=''">
+                u.name like '%' #{owner} '%'
+            </if>
+            <if test="name!=null and name!=''">
+                and t.name like '%' #{name} '%'
+            </if>
+            <if test="customerName!=null and customerName!=''">
+                and c.name like '%' #{customerName} '%'
+            </if>
+            <if test="stage!=null and stage!=''">
+                and t.stage=#{stage}
+            </if>
+            <if test="type!=null and type!=''">
+                and t.type=#{type}
+            </if>
+            <if test="source!=null and source!=''">
+                and t.source=#{source}
+            </if>
+            <if test="contactsName!=null and contactsName!=''">
+                and con.fullname like '%' #{contactsName} '%'
+            </if>
+
+        </where>
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <insert id="save">
+        insert into tbl_tran(
+        id,
+        owner,
+        money,
+        name,
+        expectedDate,
+        customerId,
+        stage,
+        type,
+        source,
+        activityId,
+        contactsId,
+        createBy,
+        createTime,
+        description,
+        contactSummary,
+        nextContactTime
+        )
+        values(
+        #{id},
+        #{owner},
+        #{money},
+        #{name},
+        #{expectedDate},
+        #{customerId},
+        #{stage},
+        #{type},
+        #{source},
+        #{activityId},
+        #{contactsId},
+        #{createBy},
+        #{createTime},
+        #{description},
+        #{contactSummary},
+        #{nextContactTime}
+
+        )
+    </insert>
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
